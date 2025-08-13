@@ -1,4 +1,11 @@
-
-
-
-jhuh[]
+{
+  "songs": [
+    {
+      "title": "YA BURCU",
+      "artist": "Gökhan & Poyraz",
+      "cover": "assets/img/cover1.svg",
+      "audio": "assets/audio/[GknSes]!ÇÜNKÜ_BOŞVERDİM_.mp3",
+      "duration": "3:25"
+    }
+  ]
+}
