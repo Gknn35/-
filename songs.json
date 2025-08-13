@@ -5,14 +5,14 @@
       "artist": "Gökhan Özkanlı",
       "cover": "assets/img/cover1.svg",
       "audio": "assets/audio/demo_track_1.wav",
-      "duration": "1:30"
+      "duration": "1:12"
     },
     {
       "title": "Demo Track 2",
       "artist": "Gökhan Özkanlı",
       "cover": "assets/img/cover2.svg",
       "audio": "assets/audio/demo_track_2.wav",
-      "duration": "1:30"
+      "duration": "1:12"
     }
   ]
 }

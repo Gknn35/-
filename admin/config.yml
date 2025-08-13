@@ -1,48 +1,37 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: YOUR_GITHUB_USERNAME/YOUR_REPOSITORY
   branch: main
+  base_url: "/"
+  auth_endpoint: "/.netlify/functions/auth"
 
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
-
-site_url: "/"
-logo_url: "/assets/img/logo.svg"
 
 collections:
   - label: "Şarkılar"
     name: "songs"
     file: "songs.json"
     format: "json"
-    editor:
-      preview: false
+    editor: { preview: false }
     fields:
-      - label: "Şarkılar"
-        name: "songs"
-        widget: "list"
-        collapsed: false
-        allow_add: true
-        fields:
-          - { label: "Başlık", name: "title", widget: "string" }
-          - { label: "Sanatçı", name: "artist", widget: "string", default: "Gökhan Özkanlı" }
-          - { label: "Kapak", name: "cover", widget: "image" }
-          - { label: "Ses Dosyası", name: "audio", widget: "file" }
-          - { label: "Süre", name: "duration", widget: "string", required: false }
-
+      - { label: "Şarkılar", name: "songs", widget: "list", fields: [
+          { label: "Başlık", name: "title", widget: "string" },
+          { label: "Sanatçı", name: "artist", widget: "string", default: "Gökhan Özkanlı" },
+          { label: "Kapak", name: "cover", widget: "image" },
+          { label: "Ses Dosyası", name: "audio", widget: "file" },
+          { label: "Süre", name: "duration", widget: "string", required: false }
+        ]}
   - label: "Klipler"
     name: "videos"
     file: "videos.json"
     format: "json"
-    editor:
-      preview: false
+    editor: { preview: false }
     fields:
-      - label: "Klipler"
-        name: "videos"
-        widget: "list"
-        collapsed: false
-        allow_add: true
-        fields:
-          - { label: "Başlık", name: "title", widget: "string" }
-          - { label: "Sanatçı", name: "artist", widget: "string", default: "Gökhan Özkanlı" }
-          - { label: "Poster", name: "poster", widget: "image", required: false }
-          - { label: "Video Dosyası", name: "video", widget: "file" }
-          - { label: "Süre", name: "duration", widget: "string", required: false }
+      - { label: "Klipler", name: "videos", widget: "list", fields: [
+          { label: "Başlık", name: "title", widget: "string" },
+          { label: "Sanatçı", name: "artist", widget: "string", default: "Gökhan Özkanlı" },
+          { label: "Poster", name: "poster", widget: "image", required: false },
+          { label: "Video Dosyası", name: "video", widget: "file" },
+          { label: "Süre", name: "duration", widget: "string", required: false }
+        ]}

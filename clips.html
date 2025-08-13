@@ -1,101 +1,14 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Kliplerim — Gökhan Özkanlı</title>
-  <link rel="stylesheet" href="assets/css/style.css">
-  <meta name="theme-color" content="#0b0b0f">
-</head>
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kliplerim — Gökhan Özkanlı</title><link rel="stylesheet" href="assets/css/style.css"></head>
 <body>
-  <nav class="nav">
-    <div class="container nav-inner">
-      <div class="brand">
-        <img src="assets/img/logo.svg" alt="Gökhan Özkanlı">
-        <span>Gökhan Özkanlı</span>
-      </div>
-      <div class="nav-right">
-        <a class="btn" href="index.html">Ana Sayfa</a>
-        <a class="btn" href="songs.html">Şarkılarım</a>
-        <a class="btn" href="clips.html">Kliplerim</a>
-        <a class="btn" href="admin.html">Yönetim (Yerel)</a>
-        <a class="btn" href="admin/">Yönetim (Online)</a>
-      </div>
-    </div>
-  </nav>
-
-  <main class="container section">
-    <header class="fade-up" style="margin-bottom:18px">
-      <div class="kicker">Video Klipler</div>
-      <h1>Kliplerim</h1>
-      <p class="lead">Kendi sitemde yayınladığım klipler. Kartlara tıklayarak izleyebilirsiniz.</p>
-    </header>
-
-    <div id="clips-grid" class="grid">
-      <div class="tile"><div class="info" style="padding:20px">Yükleniyor…</div></div>
-    </div>
-  </main>
-
-  <footer class="footer">
-    <div class="container">© <span id="y"></span> Gökhan Özkanlı — Tüm hakları saklıdır.</div>
-  </footer>
-
-  <div class="modal" id="modal-root">
-    <div class="modal-card">
-      <div class="modal-header">
-        <div class="modal-title" id="modal-title">Klip Başlığı</div>
-        <button class="close" data-close>kapat</button>
-      </div>
-      <div class="modal-body">
-        <img class="audio-cover" id="modal-img" src="assets/img/default_poster.svg" alt="Poster">
-        <video id="modal-video" class="player" controls style="width:100%; height:auto;"></video>
-        <div class="small">Video başlamazsa tarayıcınızın otomatik oynatma ayarlarını kontrol edin.</div>
-      </div>
-    </div>
-  </div>
-
-  <script src="assets/js/main.js"></script>
-  <script>
-    async function loadClips(){
-      const grid = document.getElementById('clips-grid');
-      try{
-        const res = await fetch('videos.json');
-        const raw = await res.json();
-        const list = Array.isArray(raw) ? raw : (raw.videos || raw.items || raw.data || []);
-        grid.innerHTML = '';
-        if(!list.length){
-          grid.innerHTML = '<div class="tile"><div class="info" style="padding:20px">Henüz bir klip eklenmemiş.</div></div>';
-          return;
-        }
-        list.forEach(item=>{
-          const card = document.createElement('div');
-          card.className = 'tile fade-up';
-          card.innerHTML = `
-            <div class="badge">Yeni</div>
-            <img src="${item.poster || 'assets/img/default_poster.svg'}" alt="${item.title}">
-            <div class="info">
-              <h3>${item.title}</h3>
-              <div class="muted">${item.artist || 'Gökhan Özkanlı'} · ${item.duration || ''}</div>
-            </div>`;
-          card.addEventListener('click', ()=>{
-            // open modal
-            const modalRoot = document.getElementById('modal-root');
-            document.getElementById('modal-title').textContent = (item.title || 'Klip') + ' — ' + (item.artist || 'Gökhan Özkanlı');
-            document.getElementById('modal-img').src = item.poster || 'assets/img/default_poster.svg';
-            const video = document.getElementById('modal-video');
-            video.src = item.video;
-            video.play().catch(()=>{});
-            modalRoot.classList.add('open');
-          });
-          grid.appendChild(card);
-          requestAnimationFrame(()=> card.classList.add('reveal'));
-        });
-      }catch(e){
-        grid.innerHTML = '<div class="tile"><div class="info" style="padding:20px">Klip listesi yüklenemedi.</div></div>';
-      }
-    }
-    document.addEventListener('DOMContentLoaded', loadClips);
-  </script>
-  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
-</body>
-</html>
+<nav><div class="container" style="display:flex;align-items:center;justify-content:space-between">
+  <div style="display:flex;align-items:center;gap:10px"><img src="assets/img/logo.svg" alt="logo" style="height:32px"><b>Gökhan Özkanlı</b></div>
+  <div><a class="btn" href="index.html">Ana Sayfa</a><a class="btn" href="songs.html">Şarkılarım</a><a class="btn" href="clips.html">Kliplerim</a><a class="btn" href="admin/">Yönetim (Online)</a></div>
+</div></nav>
+<main class="container" style="padding:24px 20px">
+  <h1>Kliplerim</h1><p class="lead">Panelden eklediklerin burada görünecek.</p>
+  <div id="clips-grid" class="grid"><div class="tile"><div class="info">Henüz bir klip eklenmemiş.</div></div></div>
+</main>
+<footer><div class="container">© <span id="y"></span> Gökhan Özkanlı</div></footer>
+<script>document.getElementById('y').textContent=new Date().getFullYear()</script>
+</body></html>

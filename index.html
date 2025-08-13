@@ -1,118 +1,16 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Gökhan Özkanlı — Resmi Web Sitesi</title>
-  <link rel="stylesheet" href="assets/css/style.css">
-  <meta name="theme-color" content="#0b0b0f">
-</head>
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gökhan Özkanlı — Resmi Site</title><link rel="stylesheet" href="assets/css/style.css"></head>
 <body>
-  <nav class="nav">
-    <div class="container nav-inner">
-      <div class="brand">
-        <img src="assets/img/logo.svg" alt="Gökhan Özkanlı">
-        <span>Gökhan Özkanlı</span>
-      </div>
-      <div class="nav-right">
-        <a class="btn" href="index.html">Ana Sayfa</a>
-        <a class="btn" href="songs.html">Şarkılarım</a>
-        <a class="btn" href="clips.html">Kliplerim</a>
-        <a class="btn" href="admin.html">Yönetim (Yerel)</a>
-        <a class="btn" href="admin/">Yönetim (Online)</a>
-      </div>
-    </div>
-  </nav>
-
-  <header class="container hero">
-    <div class="fade-up">
-      <div class="kicker">Resmi Tanıtım Sitesi</div>
-      <h1>Siyah — Kırmızı — Beyaz<br/>modern bir müzik dünyası</h1>
-      <p class="lead">
-        Ben Gökhan Özkanlı. Ürettiğim parçaları önce burada paylaşırım.
-        Klipler, kısa öyküler ve stüdyomdan notlar — hepsi bu sitede.
-      </p>
-      <div class="cta">
-        <a class="button" href="songs.html">Şarkıları Dinle</a>
-        <a class="button alt" href="#bio">Biyografim</a>
-      </div>
-    </div>
-    <div class="fade-up card">
-      <img src="assets/img/cover1.svg" alt="Hero Cover">
-    </div>
-  </header>
-
-  <main>
-    <section id="bio" class="section container">
-      <div class="grid">
-        <article class="card fade-up" style="grid-column: span 2;">
-          <div style="padding:20px">
-            <h2>Biyografi</h2>
-            <p>
-              İzmir doğumluyum; müzikle yolum küçük yaşlarda kesişti.
-              Rap, elektronik ve etnik motifleri harmanlayarak kendi sesimi oluşturdum.
-              Bu sitede yer alan parçalar; YouTube, Spotify gibi platformlara gelmeden önce ilk kez burada dinlenir.
-            </p>
-          </div>
-        </article>
-        <aside class="card fade-up">
-          <div style="padding:20px">
-            <h3>Güncel</h3>
-            <p class="small">Yeni EP hazırlığı · Stüdyo günlükleri yakında</p>
-            <a class="button" href="songs.html">Ön Dinleme</a>
-          </div>
-        </aside>
-      </div>
-    </section>
-
-    <section class="section container">
-      <h2 class="fade-up">Öne Çıkanlar</h2>
-      <div class="grid">
-        <div class="tile fade-up">
-          <div class="badge">Yeni</div>
-          <img src="assets/img/cover2.svg" alt="Demo 2">
-          <div class="info">
-            <h3>Demo Track 2</h3>
-            <div class="muted">Elektronik · 1:30</div>
-          </div>
-        </div>
-        <div class="tile fade-up">
-          <img src="assets/img/cover1.svg" alt="Demo 1">
-          <div class="info">
-            <h3>Demo Track 1</h3>
-            <div class="muted">Ambient · 1:30</div>
-          </div>
-        </div>
-        <div class="tile fade-up">
-          <img src="assets/img/cover2.svg" alt="Demo 2">
-          <div class="info">
-            <h3>Stüdyo Notları</h3>
-            <div class="muted">Blog · Yakında</div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div class="container">© <span id="y"></span> Gökhan Özkanlı — Tüm hakları saklıdır.</div>
-  </footer>
-
-  <div class="modal" id="modal-root">
-    <div class="modal-card">
-      <div class="modal-header">
-        <div class="modal-title" id="modal-title">Şarkı Başlığı</div>
-        <button class="close" data-close>kapat</button>
-      </div>
-      <div class="modal-body">
-        <img class="audio-cover" id="modal-img" src="assets/img/cover1.svg" alt="Kapak">
-        <audio id="modal-audio" class="player" controls></audio>
-        <div class="small">Şarkı çalmıyorsa ses düzeyinizi kontrol edin.</div>
-      </div>
-    </div>
-  </div>
-
-  <script src="assets/js/main.js"></script>
-  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
-</body>
-</html>
+<nav><div class="container" style="display:flex;align-items:center;justify-content:space-between">
+  <div style="display:flex;align-items:center;gap:10px"><img src="assets/img/logo.svg" alt="logo" style="height:32px"><b>Gökhan Özkanlı</b></div>
+  <div><a class="btn" href="index.html">Ana Sayfa</a><a class="btn" href="songs.html">Şarkılarım</a><a class="btn" href="clips.html">Kliplerim</a><a class="btn" href="admin/">Yönetim (Online)</a></div>
+</div></nav>
+<section class="hero container">
+  <div><h1>Modern, şık, animasyonlu tanıtım sitesi</h1><p class="lead">Şarkılarımı ve kliplerimi önce burada paylaşırım.</p>
+    <p><a class="button" href="songs.html">Şarkıları Dinle</a><a class="btn" href="#bio">Biyografim</a></p></div>
+  <div class="card"><img src="assets/img/cover1.svg" alt=""></div>
+</section>
+<section id="bio" class="container"><div class="card" style="padding:18px"><h2>Biyografi</h2><p>İzmir doğumluyum. Rap, elektronik ve etnik motifleri harmanlayarak kendi sesimi oluşturdum.</p></div></section>
+<footer><div class="container">© <span id="y"></span> Gökhan Özkanlı</div></footer>
+<script>document.getElementById('y').textContent=new Date().getFullYear()</script>
+</body></html>
