@@ -1,188 +1,57 @@
-<!doctype html>
-<html lang="tr">
-<head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Yönetim Paneli — Gökhan Özkanlı</title>
-<link rel="stylesheet" href="assets/css/style.css"/>
-<style>body{opacity:1!important}.hidden{display:none}</style>
-</head>
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Yönetim — Online</title><link rel="stylesheet" href="assets/css/style.css"></head>
 <body class="ready">
-  <nav class="nav"><div class="container nav-inner">
-    <div class="brand"><img src="assets/img/logo.svg" alt="" style="height:32px"><span>Yönetim</span></div>
-    <div class="nav-right"><a class="btn" href="index.html">Siteye dön</a></div>
-  </div></nav>
+<nav class="nav"><div class="container nav-inner"><div class="brand"><img src="assets/img/logo.svg"><span>Yönetim</span></div><div><a class="btn" href="index.html">Siteye dön</a></div></div></nav>
+<main class="admin-wrap">
+  <div class="panel"><h2>Giriş</h2><div class="row">
+    <div><label>Yönetici Şifresi</label><input id="key" class="input" type="password" placeholder="Varsayılan: gokhan123"></div>
+    <div style="display:flex;align-items:end"><button class="btnx primary" id="login">Giriş</button></div>
+  </div><div class="notice">Şifre, sunucu tarafında kontrol edilir.</div></div>
 
-  <div class="admin-wrap">
-    <!-- Giriş -->
-    <div class="panel">
-      <h2>Giriş</h2>
-      <p class="notice">İlk kullanımda bir PIN belirleyin; sonraki girişlerde aynı PIN ile açılır.</p>
-      <div class="row">
-        <div><label>PIN</label><input id="pin" class="input" type="password" placeholder="4+ haneli PIN"></div>
-        <div style="display:flex;align-items:flex-end;gap:8px">
-          <button class="btnx primary" id="loginBtn">Giriş / PIN Ayarla</button>
-          <button class="btnx" id="resetPinBtn">PIN Sıfırla</button>
-        </div>
-      </div>
-      <div class="notice" style="margin-top:8px">Durum: <b id="authState">Kilidi Açılmadı</b></div>
-    </div>
-
-    <!-- Klasör seç -->
-    <div class="panel">
-      <h2>1) Site klasörünü seç</h2>
-      <p class="notice">İçinde <b>index.html</b> olan klasörü seç. (Chrome/Edge masaüstü gerekir.)</p>
-      <button class="btnx" id="pickRoot">Site klasörünü seç</button>
-      <span id="rootHint" class="notice"></span>
-      <div id="fsWarn" class="notice" style="margin-top:8px;color:#ff8484"></div>
-    </div>
-
-    <!-- Şarkı ekle -->
-    <div class="panel">
-      <h2>2) Şarkı ekle</h2>
-      <div class="row3">
-        <div><label>Başlık</label><input id="sTitle" class="input" placeholder="Şarkı adı"></div>
-        <div><label>Süre (opsiyonel)</label><input id="sDur" class="input" placeholder="3:12"></div>
-        <div><label>Sanatçı</label><input id="sArtist" class="input" value="Gökhan Özkanlı"></div>
-      </div>
-      <div class="row">
-        <div><label>Kapak (jpg/png/svg)</label><input id="sCover" class="input" type="file" accept=".jpg,.jpeg,.png,.svg"></div>
-        <div><label>Ses (mp3/wav)</label><input id="sAudio" class="input" type="file" accept=".mp3,.wav"></div>
-      </div>
-      <div style="margin-top:10px;display:flex;gap:8px">
-        <button class="btnx primary" id="addSong">Şarkıyı Ekle</button>
-        <button class="btnx" id="refreshSongs">Listeyi Yenile</button>
-      </div>
-      <div id="songsList" class="list" style="margin-top:12px"></div>
-    </div>
-
-    <!-- Klip ekle -->
-    <div class="panel">
-      <h2>3) Klip ekle</h2>
-      <div class="row3">
-        <div><label>Başlık</label><input id="vTitle" class="input" placeholder="Klip adı"></div>
-        <div><label>Süre (opsiyonel)</label><input id="vDur" class="input" placeholder="3:12"></div>
-        <div><label>Sanatçı</label><input id="vArtist" class="input" value="Gökhan Özkanlı"></div>
-      </div>
-      <div class="row">
-        <div><label>Poster (opsiyonel)</label><input id="vPoster" class="input" type="file" accept=".jpg,.jpeg,.png,.svg"></div>
-        <div><label>Video (mp4/webm)</label><input id="vVideo" class="input" type="file" accept=".mp4,.webm"></div>
-      </div>
-      <div style="margin-top:10px;display:flex;gap:8px">
-        <button class="btnx primary" id="addVideo">Klip Ekle</button>
-        <button class="btnx" id="refreshVideos">Listeyi Yenile</button>
-      </div>
-      <div id="videosList" class="list" style="margin-top:12px"></div>
-    </div>
+  <div class="panel"><h2>1) Şarkı Ekle</h2>
+    <div class="row3"><div><label>Başlık</label><input id="title" class="input" placeholder="Şarkı adı"></div>
+    <div><label>Süre (opsiyonel)</label><input id="dur" class="input" placeholder="3:12"></div>
+    <div><label>Sanatçı</label><input id="artist" class="input" value="Gökhan Özkanlı"></div></div>
+    <div class="row"><div><label>Kapak (jpg/png/svg)</label><input id="cover" class="input" type="file" accept=".jpg,.jpeg,.png,.svg"></div>
+    <div><label>Ses (mp3/wav)</label><input id="audio" class="input" type="file" accept=".mp3,.wav"></div></div>
+    <div style="margin-top:10px;display:flex;gap:8px"><button class="btnx primary" id="upload">Yükle ve Ekle</button><button class="btnx" id="reload">Listeyi Yenile</button></div>
+    <div id="status" class="notice" style="margin-top:8px"></div>
   </div>
 
+  <div class="panel"><h2>Mevcut Şarkılar</h2><div id="list" class="list"></div></div>
+</main>
 <script>
-// ===== Basit PIN koruması =====
-const $ = sel => document.querySelector(sel);
-const enc = new TextEncoder(), dec = new TextDecoder();
-const getPin = () => localStorage.getItem('admin_pin') || '';
-const setPin = v => localStorage.setItem('admin_pin', v);
-const authed = () => sessionStorage.getItem('authed')==='1';
-const needAuth = () => { if(!authed()){ alert('Önce PIN ile giriş yapın.'); throw new Error('noauth'); }};
-
-$('#loginBtn').onclick = () => {
-  const v = $('#pin').value.trim();
-  if(!v || v.length<4) return alert('En az 4 haneli PIN girin.');
-  const saved = getPin();
-  if(!saved){ setPin(v); sessionStorage.setItem('authed','1'); alert('PIN kaydedildi. Giriş yapıldı.'); }
-  else if(saved===v){ sessionStorage.setItem('authed','1'); alert('Giriş başarılı.'); }
-  else return alert('PIN yanlış.');
-  $('#authState').textContent = 'Açık';
-};
-$('#resetPinBtn').onclick = () => { localStorage.removeItem('admin_pin'); sessionStorage.removeItem('authed'); $('#authState').textContent='Kilidi Açılmadı'; alert('PIN sıfırlandı.'); };
-
-// ===== File System Access API yardımcıları =====
-let rootHandle=null;
-const fsOK = !!window.showDirectoryPicker;
-if(!fsOK){ $('#fsWarn').textContent = 'Tarayıcı bu panel için gerekli dosya erişimini desteklemiyor. Lütfen Chrome veya Edge masaüstü kullanın.'; }
-
-async function ensureDir(dir, parts){ let cur = dir; for(const p of parts){ cur = await cur.getDirectoryHandle(p, {create:true}); } return cur; }
-async function writeFile(dir, parts, file){ const name = parts.pop(); const d = await ensureDir(dir, parts); const fh = await d.getFileHandle(name, {create:true}); const ws = await fh.createWritable(); await ws.write(file); await ws.close(); }
-async function readJSON(dir, name, fb){ try{ const fh = await dir.getFileHandle(name); const f = await fh.getFile(); return JSON.parse(await f.text()); }catch(e){ return fb; } }
-async function writeJSON(dir, name, obj){ const data = enc.encode(JSON.stringify(obj,null,2)); const fh = await dir.getFileHandle(name, {create:true}); const ws = await fh.createWritable(); await ws.write(data); await ws.close(); }
-
-$('#pickRoot').onclick = async ()=> {
+let token='';
+const $=s=>document.querySelector(s);
+$('#login').onclick=()=>{ token=$('#key').value||'gokhan123'; alert('Giriş yapıldı.'); };
+$('#reload').onclick=()=>load();
+async function toDataUrl(file){
+  return new Promise((res,rej)=>{ const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=rej; fr.readAsDataURL(file); });
+}
+$('#upload').onclick=async()=>{
   try{
-    needAuth(); if(!fsOK) return;
-    rootHandle = await window.showDirectoryPicker({id:'gokhan_site_root', mode:'readwrite'});
-    $('#rootHint').textContent = 'Seçildi: ' + (rootHandle.name||'site');
-  }catch(e){ if(e.message!=='noauth') alert('Klasör seçilmedi.'); }
+    $('#status').textContent='Yükleniyor...';
+    const title=$('#title').value.trim(); const artist=$('#artist').value.trim(); const duration=$('#dur').value.trim();
+    const audio=$('#audio').files[0]; const cover=$('#cover').files[0];
+    if(!title||!audio){ alert('Başlık ve ses zorunlu.'); return; }
+    const payload={title,artist,duration,
+      audio:{name:audio.name,dataUrl:await toDataUrl(audio)},
+      cover: cover? {name:cover.name,dataUrl:await toDataUrl(cover)} : null
+    };
+    const r=await fetch('/.netlify/functions/upload',{method:'POST',headers:{'content-type':'application/json','x-admin-key':token},body:JSON.stringify(payload)});
+    if(!r.ok){ const t=await r.text(); throw new Error(t||('HTTP '+r.status)); }
+    $('#status').textContent='Eklendi.'; load();
+  }catch(e){ $('#status').textContent='Hata: '+e.message; }
 };
-
-// ===== Şarkılar =====
-async function renderSongs(){
-  if(!rootHandle) return alert('Önce site klasörünü seçin.');
-  const data = await readJSON(rootHandle,'songs.json',{songs:[]});
-  const wrap = $('#songsList'); wrap.innerHTML='';
-  data.songs.forEach((it,i)=>{
+async function load(){
+  const r=await fetch('/.netlify/functions/songs',{cache:'no-store'}); const d=await r.json();
+  const ul=$('#list'); ul.innerHTML='';
+  (d.songs||[]).forEach(s=>{
     const el=document.createElement('div'); el.className='item';
-    el.innerHTML = `<div><b>${it.title}</b> <span class="badge small">${it.duration||''}</span><div class="notice">${it.audio}</div></div>
-      <div style="display:flex;gap:8px"><button class="btnx" data-del="${i}">Sil</button></div>`;
-    el.querySelector('[data-del]').onclick = async ()=>{ if(!confirm('Bu şarkı silinsin mi?')) return;
-      const d=await readJSON(rootHandle,'songs.json',{songs:[]}); d.songs.splice(i,1); await writeJSON(rootHandle,'songs.json',d); renderSongs(); };
-    wrap.appendChild(el);
+    el.innerHTML=`<div><b>${s.title}</b> <span class="badge small">${s.duration||''}</span><div class="notice">${s.audio}</div></div>`;
+    ul.appendChild(el);
   });
 }
-$('#refreshSongs').onclick = renderSongs;
-
-$('#addSong').onclick = async ()=> {
-  try{
-    needAuth();
-    if(!rootHandle) return alert('Önce site klasörünü seçin.');
-    const title = $('#sTitle').value.trim();
-    const duration = $('#sDur').value.trim();
-    const artist = $('#sArtist').value.trim() || 'Gökhan Özkanlı';
-    const c = $('#sCover').files[0];
-    const a = $('#sAudio').files[0];
-    if(!title || !a) return alert('Başlık ve ses zorunlu.');
-    if(c) await writeFile(rootHandle,['assets','img',c.name], c);
-    await writeFile(rootHandle,['assets','audio',a.name], a);
-    const data = await readJSON(rootHandle,'songs.json',{songs:[]});
-    data.songs.unshift({ title, artist, duration, cover: c ? `assets/img/${c.name}` : 'assets/img/cover1.svg', audio:`assets/audio/${a.name}` });
-    await writeJSON(rootHandle,'songs.json', data);
-    alert('Şarkı eklendi.'); renderSongs();
-  }catch(e){ alert('Hata: '+e.message); console.error(e); }
-};
-
-// ===== Videolar =====
-async function renderVideos(){
-  if(!rootHandle) return alert('Önce site klasörünü seçin.');
-  const data = await readJSON(rootHandle,'videos.json',{videos:[]});
-  const wrap = $('#videosList'); wrap.innerHTML='';
-  data.videos.forEach((it,i)=>{
-    const el=document.createElement('div'); el.className='item';
-    el.innerHTML = `<div><b>${it.title}</b> <span class="badge small">${it.duration||''}</span><div class="notice">${it.video}</div></div>
-      <div style="display:flex;gap:8px"><button class="btnx" data-del="${i}">Sil</button></div>`;
-    el.querySelector('[data-del]').onclick = async ()=>{ if(!confirm('Bu klip silinsin mi?')) return;
-      const d=await readJSON(rootHandle,'videos.json',{videos:[]}); d.videos.splice(i,1); await writeJSON(rootHandle,'videos.json',d); renderVideos(); };
-    wrap.appendChild(el);
-  });
-}
-$('#refreshVideos').onclick = renderVideos;
-
-$('#addVideo').onclick = async ()=> {
-  try{
-    needAuth();
-    if(!rootHandle) return alert('Önce site klasörünü seçin.');
-    const title = $('#vTitle').value.trim();
-    const duration = $('#vDur').value.trim();
-    const artist = $('#vArtist').value.trim() || 'Gökhan Özkanlı';
-    const p = $('#vPoster').files[0];
-    const v = $('#vVideo').files[0];
-    if(!title || !v) return alert('Başlık ve video zorunlu.');
-    if(p) await writeFile(rootHandle,['assets','img',p.name], p);
-    await writeFile(rootHandle,['assets','video',v.name], v);
-    const data = await readJSON(rootHandle,'videos.json',{videos:[]});
-    data.videos.unshift({ title, artist, duration, poster: p ? `assets/img/${p.name}` : 'assets/img/cover2.svg', video:`assets/video/${v.name}` });
-    await writeJSON(rootHandle,'videos.json', data);
-    alert('Klip eklendi.'); renderVideos();
-  }catch(e){ alert('Hata: '+e.message); console.error(e); }
-};
+load();
 </script>
-</body>
-</html>
+</body></html>

@@ -1,14 +1,22 @@
 <!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Şarkılarım — Gökhan Özkanlı</title><link rel="stylesheet" href="assets/css/style.css"></head>
-<body>
-<nav><div class="container" style="display:flex;align-items:center;justify-content:space-between">
-  <div style="display:flex;align-items:center;gap:10px"><img src="assets/img/logo.svg" alt="logo" style="height:32px"><b>Gökhan Özkanlı</b></div>
-  <div><a class="btn" href="index.html">Ana Sayfa</a><a class="btn" href="songs.html">Şarkılarım</a><a class="btn" href="clips.html">Kliplerim</a><a class="btn" href="admin/">Yönetim (Online)</a></div>
-</div></nav>
-<main class="container" style="padding:24px 20px">
-  <h1>Şarkılarım</h1><p class="lead">Kartlara tıklayınca çalar.</p>
-  <div id="songs-grid" class="grid"><div class="tile"><div class="info">Yükleniyor…</div></div></div>
-</main>
-<footer><div class="container">© <span id="y"></span> Gökhan Özkanlı</div></footer>
-<script src="assets/js/main.js"></script><script>document.getElementById('y').textContent=new Date().getFullYear()</script>
-</body></html>
+<body class="ready">
+<nav class="nav"><div class="container nav-inner"><div class="brand"><img src="assets/img/logo.svg" alt=""><span>Gökhan Özkanlı</span></div>
+<div><a class="btn" href="index.html">Ana Sayfa</a><a class="btn" href="songs.html">Şarkılarım</a><a class="btn" href="clips.html">Kliplerim</a><a class="btn" href="admin.html">Yönetim</a></div></div></nav>
+<main class="container section"><h1>Şarkılarım</h1><div id="songs" class="grid"></div></main>
+<footer class="footer"><div class="container">© <span id="y"></span> Gökhan Özkanlı</div></footer>
+<script>
+async function load(){
+  const r = await fetch('/.netlify/functions/songs',{cache:'no-store'});
+  const data = await r.json();
+  const list = (data.songs||[]);
+  const root = document.getElementById('songs'); root.innerHTML='';
+  if(!list.length){ root.innerHTML='<div class="tile"><div class="info" style="padding:20px">Henüz parça eklenmemiş.</div></div>'; return; }
+  for(const s of list){
+    const el = document.createElement('div'); el.className='tile';
+    el.innerHTML = `<img src="${s.cover||'assets/img/cover1.svg'}"><div class="info"><h3>${s.title}</h3><div class="muted">${s.artist||''} · ${s.duration||''}</div><audio controls style="width:100%;margin-top:8px"><source src="${s.audio}" type="audio/mpeg"><source src="${s.audio}" type="audio/wav"></audio></div>`;
+    root.appendChild(el);
+  }
+}
+load(); document.getElementById('y').textContent=new Date().getFullYear();
+</script></body></html>
