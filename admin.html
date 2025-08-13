@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Yönetim (Yerel) — Gökhan Özkanlı</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <meta name="theme-color" content="#0b0b0f">
+  <style>
+    .admin{max-width:900px;margin:0 auto}
+    .row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end}
+    .panel{border:1px solid var(--border);border-radius:16px;padding:16px;background:var(--bg-soft);margin-top:18px}
+    label{font-size:14px;color:var(--muted)}
+    input,select{width:100%;padding:10px;border:1px solid var(--border);border-radius:12px;background:#0f0f14;color:var(--text)}
+    .list{margin-top:12px}
+    .item{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--border);border-radius:12px;padding:10px;margin-top:8px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0))}
+    .danger{border-color:#7a1717;color:#fff;background:#2a0f11}
+    .muted{color:var(--muted);font-size:12px}
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <div class="brand">
+        <img src="assets/img/logo.svg" alt="Gökhan Özkanlı">
+        <span>Gökhan Özkanlı</span>
+      </div>
+      <div class="nav-right">
+        <a class="btn" href="index.html">Ana Sayfa</a>
+        <a class="btn" href="songs.html">Şarkılarım</a>
+        <a class="btn" href="clips.html">Kliplerim</a>
+        <a class="btn" href="admin.html">Yönetim</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container section admin">
+    <h1>Yönetim (Yerel)</h1>
+    <p class="lead">Hiç kod yazmadan şarkı ve klip ekleyip silebilirsin. <b>Google Chrome</b> masaüstünde açmanı öneririm (Dosya Sistemi Erişim API).</p>
+    <button class="button" id="pick-root">Site klasörünü seç</button>
+    <div id="rootPath" class="small" style="margin-top:8px"></div>
+
+    <div class="panel">
+      <h2>Şarkılar</h2>
+      <div class="row">
+        <div>
+          <label>Başlık</label>
+          <input id="song-title" placeholder="Parça adı">
+        </div>
+        <button class="button" id="add-song">Şarkı ekle</button>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <div>
+          <label>Kapak (JPG/PNG/SVG)</label>
+          <input type="file" id="song-cover" accept=".jpg,.jpeg,.png,.svg">
+        </div>
+        <div>
+          <label>Ses (MP3/WAV)</label>
+          <input type="file" id="song-audio" accept=".mp3,.wav">
+        </div>
+      </div>
+      <div class="list" id="songs-list"><div class="muted">Yükleniyor…</div></div>
+    </div>
+
+    <div class="panel">
+      <h2>Klipler</h2>
+      <div class="row">
+        <div>
+          <label>Başlık</label>
+          <input id="clip-title" placeholder="Klip adı">
+        </div>
+        <button class="button" id="add-clip">Klip ekle</button>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <div>
+          <label>Poster (opsiyonel)</label>
+          <input type="file" id="clip-poster" accept=".jpg,.jpeg,.png,.svg">
+        </div>
+        <div>
+          <label>Video (MP4 önerilir)</label>
+          <input type="file" id="clip-video" accept=".mp4,.webm,.mov">
+        </div>
+      </div>
+      <div class="list" id="clips-list"><div class="muted">Yükleniyor…</div></div>
+    </div>
+  </main>
+
+  <script>
+    let rootDirHandle = null;
+    let songs = [];
+    let clips = [];
+
+    const $ = (sel)=>document.querySelector(sel);
+    const songsList = $("#songs-list");
+    const clipsList = $("#clips-list");
+
+    async function ensurePath(path){
+      // create nested folders relative to root
+      const parts = path.split('/').filter(Boolean);
+      let handle = rootDirHandle;
+      for(const part of parts){
+        handle = await handle.getDirectoryHandle(part, { create: true });
+      }
+      return handle;
+    }
+
+    async function writeFile(path, file){
+      const parts = path.split('/').filter(Boolean);
+      const filename = parts.pop();
+      const dir = parts.join('/');
+      const dirHandle = await ensurePath(dir);
+      const fh = await dirHandle.getFileHandle(filename, { create: true });
+      const ws = await fh.createWritable();
+      await ws.write(file);
+      await ws.close();
+      return path;
+    }
+
+    async function readJSON(path, fallback){
+      try{
+        const file = await (await getHandle(path)).getFile();
+        const text = await file.text();
+        return JSON.parse(text);
+      }catch(e){
+        return fallback;
+      }
+    }
+
+    async function writeJSON(path, obj){
+      const blob = new Blob([JSON.stringify(obj, null, 2)], { type: 'application/json' });
+      await writeFile(path, blob);
+    }
+
+    async function getHandle(path){
+      const parts = path.split('/').filter(Boolean);
+      let handle = rootDirHandle;
+      for(let i=0;i<parts.length;i++){
+        const p = parts[i];
+        const isFile = i === parts.length-1 && p.includes('.');
+        if(isFile){
+          return await handle.getFileHandle(p, { create: true });
+        }else{
+          handle = await handle.getDirectoryHandle(p, { create: true });
+        }
+      }
+      return handle;
+    }
+
+    function renderSongs(){
+      if(!songs.length){ songsList.innerHTML = '<div class="muted">Henüz şarkı yok.</div>'; return; }
+      songsList.innerHTML = '';
+      songs.forEach((s, idx)=>{
+        const row = document.createElement('div');
+        row.className = 'item';
+        row.innerHTML = \`
+          <div><b>\${s.title}</b><div class="muted">\${s.audio}</div></div>
+          <div>
+            <button class="button danger" data-rm="\${idx}">Sil</button>
+          </div>\`;
+        row.querySelector('[data-rm]').addEventListener('click', async ()=>{
+          if(!confirm('Silinsin mi?')) return;
+          // Try delete files too
+          try{
+            await (await getHandle(s.cover)).remove();
+          }catch{}
+          try{
+            await (await getHandle(s.audio)).remove();
+          }catch{}
+          songs.splice(idx,1);
+          await writeJSON('songs.json', songs);
+          renderSongs();
+        });
+        songsList.appendChild(row);
+      });
+    }
+
+    function renderClips(){
+      if(!clips.length){ clipsList.innerHTML = '<div class="muted">Henüz klip yok.</div>'; return; }
+      clipsList.innerHTML = '';
+      clips.forEach((c, idx)=>{
+        const row = document.createElement('div');
+        row.className = 'item';
+        row.innerHTML = \`
+          <div><b>\${c.title}</b><div class="muted">\${c.video}</div></div>
+          <div><button class="button danger" data-rm="\${idx}">Sil</button></div>\`;
+        row.querySelector('[data-rm]').addEventListener('click', async ()=>{
+          if(!confirm('Silinsin mi?')) return;
+          try{ await (await getHandle(c.video)).remove(); }catch{}
+          if(c.poster){ try{ await (await getHandle(c.poster)).remove(); }catch{} }
+          clips.splice(idx,1);
+          await writeJSON('videos.json', clips);
+          renderClips();
+        });
+        clipsList.appendChild(row);
+      });
+    }
+
+    $("#pick-root").addEventListener('click', async ()=>{
+      // Ask user to select the site root folder (the one containing index.html)
+      rootDirHandle = await window.showDirectoryPicker();
+      $("#rootPath").textContent = 'Seçili klasör: ' + rootDirHandle.name;
+      // Load lists
+      songs = await readJSON('songs.json', []);
+      clips = await readJSON('videos.json', []);
+      renderSongs();
+      renderClips();
+    });
+
+    $("#add-song").addEventListener('click', async ()=>{
+      if(!rootDirHandle) return alert('Önce site klasörünü seç.');
+      const title = $("#song-title").value.trim();
+      const cover = $("#song-cover").files[0];
+      const audio = $("#song-audio").files[0];
+      if(!title || !audio) return alert('Başlık ve ses dosyası gerekli.');
+
+      const audioPath = 'assets/audio/' + audio.name;
+      await writeFile(audioPath, audio);
+      let coverPath = 'assets/img/default_cover.svg';
+      if(cover){
+        coverPath = 'assets/img/' + cover.name;
+        await writeFile(coverPath, cover);
+      }
+      songs.push({ title, artist:'Gökhan Özkanlı', cover: coverPath, audio: audioPath, duration: '' });
+      await writeJSON('songs.json', songs);
+      $("#song-title").value = '';
+      $("#song-cover").value = '';
+      $("#song-audio").value = '';
+      renderSongs();
+      alert('Şarkı eklendi!');
+    });
+
+    $("#add-clip").addEventListener('click', async ()=>{
+      if(!rootDirHandle) return alert('Önce site klasörünü seç.');
+      const title = $("#clip-title").value.trim();
+      const poster = $("#clip-poster").files[0];
+      const video = $("#clip-video").files[0];
+      if(!title || !video) return alert('Başlık ve video gerekli.');
+
+      const videoPath = 'assets/video/' + video.name;
+      await writeFile(videoPath, video);
+      let posterPath = 'assets/img/default_poster.svg';
+      if(poster){
+        posterPath = 'assets/img/' + poster.name;
+        await writeFile(posterPath, poster);
+      }
+      clips.push({ title, artist:'Gökhan Özkanlı', poster: posterPath, video: videoPath, duration:'' });
+      await writeJSON('videos.json', clips);
+      $("#clip-title").value='';
+      $("#clip-poster").value='';
+      $("#clip-video").value='';
+      renderClips();
+      alert('Klip eklendi!');
+    });
+  </script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function(){ try{ document.body.classList.add('ready'); }catch(e){} });
+  </script>
+</body>
+</html>

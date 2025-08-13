@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Yönetim (Online)</title>
+  <link rel="stylesheet" href="/assets/css/style.css"/>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <style>
+    body{opacity:1 !important}
+    .nc-app-iframe-wrapper{height: calc(100vh - 60px)}
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <div class="brand">
+        <img src="/assets/img/logo.svg" alt="Gökhan Özkanlı">
+        <span>Yönetim (Online)</span>
+      </div>
+      <div class="nav-right">
+        <a class="btn" href="/">Siteye dön</a>
+      </div>
+    </div>
+  </nav>
+  <div class="container section">
+    <div class="card" style="padding:16px">
+      <p class="lead">Bu sayfa <b>Netlify Identity</b> ile giriş yaptıktan sonra açılır. Giriş yaptıktan sonra şarkı ve kliplerinizi yükleyip kaydedebilirsiniz.</p>
+    </div>
+  </div>
+  <script>
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on('init', user => {
+        if (!user) {
+          window.netlifyIdentity.on('login', () => {
+            document.location.reload();
+          });
+        }
+      });
+    }
+  </script>
+</body>
+</html>

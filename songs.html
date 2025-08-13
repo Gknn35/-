@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Şarkılarım — Gökhan Özkanlı</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <meta name="theme-color" content="#0b0b0f">
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <div class="brand">
+        <img src="assets/img/logo.svg" alt="Gökhan Özkanlı">
+        <span>Gökhan Özkanlı</span>
+      </div>
+      <div class="nav-right">
+        <a class="btn" href="index.html">Ana Sayfa</a>
+        <a class="btn" href="songs.html">Şarkılarım</a>
+        <a class="btn" href="clips.html">Kliplerim</a>
+        <a class="btn" href="admin.html">Yönetim (Yerel)</a>
+        <a class="btn" href="admin/">Yönetim (Online)</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container section">
+    <header class="fade-up" style="margin-bottom:18px">
+      <div class="kicker">Duyurulmamış Parçalar</div>
+      <h1>Şarkılarım</h1>
+      <p class="lead">Aşağıdaki parçalara tıklayarak dinleyebilirsiniz. WAV ve MP3 desteklenir.</p>
+    </header>
+
+    <div id="songs-grid" class="grid">
+      <div class="tile"><div class="info" style="padding:20px">Yükleniyor…</div></div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">© <span id="y"></span> Gökhan Özkanlı — Tüm hakları saklıdır.</div>
+  </footer>
+
+  <div class="modal" id="modal-root">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title" id="modal-title">Şarkı Başlığı</div>
+        <button class="close" data-close>kapat</button>
+      </div>
+      <div class="modal-body">
+        <img class="audio-cover" id="modal-img" src="assets/img/cover1.svg" alt="Kapak">
+        <audio id="modal-audio" class="player" controls></audio>
+        <div class="small">Şarkı çalmıyorsa ses düzeyinizi kontrol edin.</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/main.js"></script>
+  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+</body>
+</html>

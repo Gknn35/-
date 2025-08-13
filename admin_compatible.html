@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Yönetim — Uyumlu Mod (Kodsuz)</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <meta name="theme-color" content="#0b0b0f">
+  <style>
+    .admin{max-width:900px;margin:0 auto}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:end}
+    .panel{border:1px solid var(--border);border-radius:16px;padding:16px;background:var(--bg-soft);margin-top:18px}
+    label{font-size:14px;color:var(--muted)}
+    input{width:100%;padding:10px;border:1px solid var(--border);border-radius:12px;background:#0f0f14;color:var(--text)}
+    .list{margin-top:12px}
+    .item{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--border);border-radius:12px;padding:10px;margin-top:8px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0))}
+    .muted{color:var(--muted);font-size:12px}
+    .flex{display:flex;gap:10px;flex-wrap:wrap}
+    .button.small{padding:8px 12px;font-size:14px}
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <div class="brand">
+        <img src="assets/img/logo.svg" alt="Gökhan Özkanlı">
+        <span>Gökhan Özkanlı</span>
+      </div>
+      <div class="nav-right">
+        <a class="btn" href="index.html">Ana Sayfa</a>
+        <a class="btn" href="songs.html">Şarkılarım</a>
+        <a class="btn" href="clips.html">Kliplerim</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container section admin">
+    <h1>Yönetim — Uyumlu Mod</h1>
+    <p class="lead">Hiçbir tarayıcı özelliği gerektirmez. <b>Adımlar:</b> Şarkı/klipleri bu sayfaya ekle → <b>Güncellenmiş JSON'u indir</b> → mevcut sitendeki <code>songs.json</code>/<code>videos.json</code> dosyalarının üzerine kopyala.</p>
+
+    <div class="panel">
+      <h2>Şarkılar</h2>
+      <div class="row">
+        <div>
+          <label>Başlık</label>
+          <input id="song-title" placeholder="Parça adı">
+        </div>
+        <div>
+          <label>Süre (opsiyonel)</label>
+          <input id="song-duration" placeholder="3:12">
+        </div>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <div>
+          <label>Kapak dosya adı (assets/img/…)</label>
+          <input id="song-cover" placeholder="assets/img/kapak.jpg">
+        </div>
+        <div>
+          <label>Ses dosya adı (assets/audio/…)</label>
+          <input id="song-audio" placeholder="assets/audio/parca.mp3">
+        </div>
+      </div>
+      <div class="flex" style="margin-top:10px">
+        <button class="button" id="add-song">Listeye ekle</button>
+        <button class="button alt" id="download-songs">Güncellenmiş songs.json'u indir</button>
+      </div>
+      <div class="list" id="songs-list"><div class="muted">Henüz şarkı eklenmedi.</div></div>
+      <p class="small">Not: Dosyaları `assets/audio/` ve `assets/img/` klasörüne manuel kopyalaman gerekir. Yalnızca JSON'u indirmen yeterlidir, kod gerekmez.</p>
+    </div>
+
+    <div class="panel">
+      <h2>Klipler</h2>
+      <div class="row">
+        <div>
+          <label>Başlık</label>
+          <input id="clip-title" placeholder="Klip adı">
+        </div>
+        <div>
+          <label>Süre (opsiyonel)</label>
+          <input id="clip-duration" placeholder="2:45">
+        </div>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <div>
+          <label>Poster dosya adı (assets/img/…)</label>
+          <input id="clip-poster" placeholder="assets/img/poster.jpg">
+        </div>
+        <div>
+          <label>Video dosya adı (assets/video/…)</label>
+          <input id="clip-video" placeholder="assets/video/klip.mp4">
+        </div>
+      </div>
+      <div class="flex" style="margin-top:10px">
+        <button class="button" id="add-clip">Listeye ekle</button>
+        <button class="button alt" id="download-clips">Güncellenmiş videos.json'u indir</button>
+      </div>
+      <div class="list" id="clips-list"><div class="muted">Henüz klip eklenmedi.</div></div>
+    </div>
+
+  </main>
+
+  <script>
+    // Start with existing lists by fetching local JSON (optional).
+    let songs = [];
+    let clips = [];
+
+    function el(tag, attrs={}, html=''){
+      const e = document.createElement(tag);
+      for(const k in attrs) e.setAttribute(k, attrs[k]);
+      e.innerHTML = html;
+      return e;
+    }
+
+    async function loadExisting(){
+      try{
+        const s = await fetch('songs.json'); songs = await s.json();
+      }catch{ songs = []; }
+      try{
+        const v = await fetch('videos.json'); clips = await v.json();
+      }catch{ clips = []; }
+      renderSongs(); renderClips();
+    }
+
+    function renderSongs(){
+      const box = document.getElementById('songs-list');
+      if(!songs.length){ box.innerHTML = '<div class="muted">Henüz şarkı eklenmedi.</div>'; return; }
+      box.innerHTML = '';
+      songs.forEach((s, i)=>{
+        const row = el('div', {class:'item'},
+          '<div><b>'+s.title+'</b><div class="muted">'+s.audio+'</div></div>'+
+          '<div class="flex"><button class="button small" data-up="'+i+'">Yukarı</button>'+
+          '<button class="button small" data-down="'+i+'">Aşağı</button>'+
+          '<button class="button small" data-del="'+i+'">Sil</button></div>');
+        row.querySelector('[data-del]').onclick = ()=>{ songs.splice(i,1); renderSongs(); };
+        row.querySelector('[data-up]').onclick = ()=>{ if(i>0){ [songs[i-1], songs[i]]=[songs[i], songs[i-1]]; renderSongs(); } };
+        row.querySelector('[data-down]').onclick = ()=>{ if(i<songs.length-1){ [songs[i+1], songs[i]]=[songs[i], songs[i+1]]; renderSongs(); } };
+        box.appendChild(row);
+      });
+    }
+
+    function renderClips(){
+      const box = document.getElementById('clips-list');
+      if(!clips.length){ box.innerHTML = '<div class="muted">Henüz klip eklenmedi.</div>'; return; }
+      box.innerHTML = '';
+      clips.forEach((c, i)=>{
+        const row = el('div', {class:'item'},
+          '<div><b>'+c.title+'</b><div class="muted">'+c.video+'</div></div>'+
+          '<div class="flex"><button class="button small" data-up="'+i+'">Yukarı</button>'+
+          '<button class="button small" data-down="'+i+'">Aşağı</button>'+
+          '<button class="button small" data-del="'+i+'">Sil</button></div>');
+        row.querySelector('[data-del]').onclick = ()=>{ clips.splice(i,1); renderClips(); };
+        row.querySelector('[data-up]').onclick = ()=>{ if(i>0){ [clips[i-1], clips[i]]=[clips[i], clips[i-1]]; renderClips(); } };
+        row.querySelector('[data-down]').onclick = ()=>{ if(i<clips.length-1){ [clips[i+1], clips[i]]=[clips[i], clips[i+1]]; renderClips(); } };
+        box.appendChild(row);
+      });
+    }
+
+    document.getElementById('add-song').onclick = ()=>{
+      const title = document.getElementById('song-title').value.trim();
+      const duration = document.getElementById('song-duration').value.trim();
+      const cover = document.getElementById('song-cover').value.trim();
+      const audio = document.getElementById('song-audio').value.trim();
+      if(!title || !audio){ alert('Başlık ve ses dosyası gerekli.'); return; }
+      songs.push({ title, artist:'Gökhan Özkanlı', cover: cover || 'assets/img/cover1.svg', audio, duration });
+      renderSongs();
+      document.getElementById('song-title').value='';
+      document.getElementById('song-duration').value='';
+      document.getElementById('song-cover').value='';
+      document.getElementById('song-audio').value='';
+    };
+
+    document.getElementById('add-clip').onclick = ()=>{
+      const title = document.getElementById('clip-title').value.trim();
+      const duration = document.getElementById('clip-duration').value.trim();
+      const poster = document.getElementById('clip-poster').value.trim();
+      const video = document.getElementById('clip-video').value.trim();
+      if(!title || !video){ alert('Başlık ve video dosyası gerekli.'); return; }
+      clips.push({ title, artist:'Gökhan Özkanlı', poster: poster || 'assets/img/default_poster.svg', video, duration });
+      renderClips();
+      document.getElementById('clip-title').value='';
+      document.getElementById('clip-duration').value='';
+      document.getElementById('clip-poster').value='';
+      document.getElementById('clip-video').value='';
+    };
+
+    function downloadJSON(filename, obj){
+      const blob = new Blob([JSON.stringify(obj, null, 2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = filename; a.click();
+      setTimeout(()=> URL.revokeObjectURL(url), 1000);
+    }
+
+    document.getElementById('download-songs').onclick = ()=> downloadJSON('songs.json', songs);
+    document.getElementById('download-clips').onclick = ()=> downloadJSON('videos.json', clips);
+
+    loadExisting();
+  </script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function(){ try{ document.body.classList.add('ready'); }catch(e){} });
+  </script>
+</body>
+</html>
