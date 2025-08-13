@@ -1,6 +1,13 @@
 {
   "songs": [
     {
+      "title": "YA BURCU (feat. Gökhan & Poyraz)",
+      "artist": "Gökhan Özkanlı",
+      "cover": "assets/uploads/ya_burcu_cover.svg",
+      "audio": "assets/uploads/ya_burcu_feat_gokhan_poyraz.wav",
+      "duration": ""
+    },
+    {
       "title": "Demo Track 1",
       "artist": "Gökhan Özkanlı",
       "cover": "assets/img/cover1.svg",
